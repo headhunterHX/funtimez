@@ -9,13 +9,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Used box
   config.vm.box = "ubuntu/trusty32"
 
-  # Accessing "localhost:8088" will access port 80 on the guest machine.
-  config.vm.network :forwarded_port, guest: 80, host: 8088
+  # Accessing "localhost:8080" will access port 80 on the guest machine.
+  config.vm.network :forwarded_port, guest: 80, host: 8080
 
   # Private Network
   config.vm.network :private_network, ip: "192.168.68.8"
 
-  # Install stuff
-  config.vm.provision :shell, :path => ".provision/bootstrap.sh"
-  config.vm.provision :shell, :path => ".provision/hackystuff.sh"
+  # Install hacky stuff
+  config.vm.provision :shell, :path => ".provision/helloworld.sh"
+
+  # Docker stuff
+  config.vm.hostname = "docker-host"
+  config.vm.provision "docker"
+  config.vm.network :forwarded_port, guest: 80, host: 4567
+  config.vm.provision :docker_compose, yml: "/dockertest/docker-compose.yml", run:"always"
 end
