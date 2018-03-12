@@ -20,7 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Docker stuff
   config.vm.hostname = "docker-host"
-  config.vm.provision "docker"
+  config.vm.provision :docker
   config.vm.network :forwarded_port, guest: 80, host: 4567
   config.vm.provision :docker_compose, yml: "/dockertest/docker-compose.yml", run:"always"
 end
